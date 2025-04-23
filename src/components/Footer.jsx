@@ -5,7 +5,7 @@ const Footer = () => {
   return (
     <footer className="footer">
       <div className="footer-content">
-        <div className="footer-logo">My Eshop</div>
+        <div className="footer-logo">Eshop</div>
         <nav className="footer-links">
           <a href="#legal">Mentions légales</a>
           <a href="#contact">Contact</a>

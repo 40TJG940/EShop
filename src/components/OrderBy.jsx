@@ -5,11 +5,11 @@ const OrderBy = ({ onSortChange, currentSort }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const sortOptions = [
-    { value: 'default', label: 'Default' },
-    { value: 'price-asc', label: 'Price: Low to High' },
-    { value: 'price-desc', label: 'Price: High to Low' },
-    { value: 'rating-desc', label: 'Highest Rated' },
-    { value: 'alphabetical', label: 'Alphabetical' }
+    { value: 'default', label: 'Défaut' },
+    { value: 'price-asc', label: 'Prix croissant' },
+    { value: 'price-desc', label: 'Prix décroissant' },
+    { value: 'rating-desc', label: 'Meilleures notes' },
+    { value: 'alphabetical', label: 'Ordre alphabétique' }
   ];
 
   const toggleDropdown = () => {
@@ -24,33 +24,36 @@ const OrderBy = ({ onSortChange, currentSort }) => {
   // Get the label of the currently selected sort option
   const getCurrentSortLabel = () => {
     const option = sortOptions.find(option => option.value === currentSort);
-    return option ? option.label : 'Default';
+    return option ? option.label : 'Défaut';
   };
 
   return (
     <div className="order-by-container">
-      <button 
-        className="dropdown-trigger"
-        onClick={toggleDropdown}
-        aria-expanded={isOpen}
-      >
-        {getCurrentSortLabel()}
-        <span className="dropdown-arrow">{isOpen ? '▲' : '▼'}</span>
-      </button>
-      
-      {isOpen && (
-        <div className="dropdown-content">
-          {sortOptions.map(option => (
-            <button
-              key={option.value}
-              className={`sort-option ${currentSort === option.value ? 'active' : ''}`}
-              onClick={() => handleSortChange(option.value)}
-            >
-              {option.label}
-            </button>
-          ))}
-        </div>
-      )}
+      <h3 className="order-by-title">Trier par</h3>
+      <div className="order-by-dropdown">
+        <button 
+          className="dropdown-trigger"
+          onClick={toggleDropdown}
+          aria-expanded={isOpen}
+        >
+          {getCurrentSortLabel()}
+          <span className="dropdown-arrow">{isOpen ? '▲' : '▼'}</span>
+        </button>
+        
+        {isOpen && (
+          <div className="dropdown-content">
+            {sortOptions.map(option => (
+              <div
+                key={option.value}
+                className={`sort-option ${currentSort === option.value ? 'active' : ''}`}
+                onClick={() => handleSortChange(option.value)}
+              >
+                {option.label}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

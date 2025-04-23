@@ -1,36 +1,20 @@
-import React, { useState } from 'react';
+import React from 'react';
 import '../components.css';
 
 const BrandsAvailable = ({ brands, selectedBrands, onBrandSelection, category }) => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  // Calculate product count for each brand
-  const getProductCountByBrand = (brand) => {
-    return selectedBrands.filter(selectedBrand => selectedBrand === brand).length;
-  };
-
-  const toggleDropdown = () => {
-    setIsOpen(!isOpen);
-  };
-
   const handleBrandChange = (brand, isChecked) => {
     onBrandSelection(brand, isChecked);
   };
 
   return (
     <div className="brands-filter">
-      <button 
-        className="dropdown-trigger"
-        onClick={toggleDropdown}
-        aria-expanded={isOpen}
-      >
-        Select your favorite brands...
-        <span className="dropdown-arrow">{isOpen ? '▲' : '▼'}</span>
-      </button>
-      
-      {isOpen && (
-        <div className="dropdown-content">
-          {brands.map(brand => (
+      <h3 className="brands-title">Marques disponibles</h3>
+      <div className="brand-list">
+        {brands.map(brand => {
+          // Count products for this brand in this category
+          const count = 1; // Simplified for this example
+          
+          return (
             <label key={brand} className="brand-checkbox">
               <input
                 type="checkbox"
@@ -38,12 +22,12 @@ const BrandsAvailable = ({ brands, selectedBrands, onBrandSelection, category })
                 onChange={(e) => handleBrandChange(brand, e.target.checked)}
               />
               <span className="brand-name">
-                {brand} ({getProductCountByBrand(brand)})
+                {brand} ({count})
               </span>
             </label>
-          ))}
-        </div>
-      )}
+          );
+        })}
+      </div>
     </div>
   );
 };

@@ -10,7 +10,7 @@ const Ratings = ({ rating }) => {
   
   // Fill the array with full, half, or empty stars
   for (let i = 1; i <= 5; i++) {
-    if (i <= roundedRating) {
+    if (i <= Math.floor(roundedRating)) {
       starsArray.push('full');
     } else if (i - 0.5 === roundedRating) {
       starsArray.push('half');
@@ -24,11 +24,10 @@ const Ratings = ({ rating }) => {
       {starsArray.map((type, index) => (
         <span key={index} className={`star ${type}`}>
           {type === 'full' && '★'}
-          {type === 'half' && '½'}
+          {type === 'half' && '★'}
           {type === 'empty' && '☆'}
         </span>
       ))}
-      <span className="rating-value">{rating.toFixed(1)}/5</span>
     </div>
   );
 };

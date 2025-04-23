@@ -4,7 +4,7 @@ import '../components.css';
 
 const Products = ({ products }) => {
   if (products.length === 0) {
-    return <div className="no-products">No products found matching your criteria</div>;
+    return <div className="no-products">Aucun produit trouvé correspondant à vos critères</div>;
   }
 
   return (

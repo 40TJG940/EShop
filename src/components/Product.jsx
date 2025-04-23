@@ -18,38 +18,32 @@ const Product = ({ product }) => {
 
   // Calculate discounted price
   const discountedPrice = (price - (price * discountPercentage / 100)).toFixed(2);
+  const discount = discountPercentage > 0 ? `-${Math.round(discountPercentage)}%` : null;
   
-  // Determine availability status
-  const availabilityStatus = stock > 0 ? "In Stock" : "Out of Stock";
-
   return (
     <article className="product-card">
+      {discount && <div className="discount-badge">{discount}</div>}
+      
       <div className="product-image">
-        <img src={thumbnail} alt={title} />
+        <img src={thumbnail || "https://placehold.co/400x300?text=No+Image"} alt={title} />
       </div>
       
       <div className="product-info">
         <h3 className="product-title">{title}</h3>
         <div className="product-category">{category}</div>
-        <div className="product-brand">{brand}</div>
-        
-        <div className="product-rating">
-          <Ratings rating={rating} />
-          <span className="reviews-count">({reviews ? reviews.length : 0} reviews)</span>
-        </div>
         
         <p className="product-description">{description}</p>
         
-        <div className="product-pricing">
-          <div className="original-price">{price}€</div>
-          <div className="discounted-price">{discountedPrice}€</div>
+        <div className="product-rating">
+          <Ratings rating={rating} />
+          <span className="rating-value">★{rating.toFixed(1)}/5</span>
         </div>
         
-        <div className="product-footer">
-          <button className="buy-button">Buy Now</button>
-          <span className={`availability ${stock > 0 ? 'in-stock' : 'out-of-stock'}`}>
-            {availabilityStatus}
-          </span>
+        <div className="product-pricing">
+          <div className="discounted-price">{discountedPrice}€</div>
+          {discountPercentage > 0 && (
+            <div className="original-price">{price.toFixed(2)}€</div>
+          )}
         </div>
       </div>
     </article>
