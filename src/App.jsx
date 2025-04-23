@@ -41,16 +41,34 @@ function App() {
         try {
           let localData;
           if (category === 'sunglasses') {
-            localData = await import('./data/sunglasses.json');
+            // In a real app, this would be an import of local JSON
+            localData = {
+              products: [
+                // Mock data would go here, or proper import for production
+                // We're simulating a fallback here
+              ]
+            };
+            // For demo: fetch the local file (but this won't work in production build)
+            const localResponse = await fetch('/src/data/sunglasses.json');
+            if (localResponse.ok) {
+              localData = await localResponse.json();
+            }
           } else {
-            localData = await import('./data/mens-shirts.json');
+            // Similar approach for mens-shirts
+            const localResponse = await fetch('/src/data/mens-shirts.json');
+            if (localResponse.ok) {
+              localData = await localResponse.json();
+            }
           }
-          setProducts(localData.products);
           
-          // Extract unique brands from local data
-          const uniqueBrands = [...new Set(localData.products.map(product => product.brand))];
-          setBrands(uniqueBrands);
-          setSelectedBrands(uniqueBrands);
+          if (localData && localData.products) {
+            setProducts(localData.products);
+            
+            // Extract unique brands from local data
+            const uniqueBrands = [...new Set(localData.products.map(product => product.brand))];
+            setBrands(uniqueBrands);
+            setSelectedBrands(uniqueBrands);
+          }
         } catch (localErr) {
           console.error('Error loading local data:', localErr);
         }
