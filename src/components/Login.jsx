@@ -1,8 +1,7 @@
-import React, { useState, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useContext, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
-import { setToken } from '../actions/tokenActions';
-import { getUser } from '../actions/getUser';
+import { setToken, setUserData } from '../actions/tokenActions';
 import '../auth-components.css';
 
 const Login = () => {
@@ -11,8 +10,20 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   
-  const { setUserAuthenticated } = useContext(AuthContext);
+  const { setUserAuthenticated, userAuthenticated } = useContext(AuthContext);
   const navigate = useNavigate();
+  const location = useLocation();
+  
+  // Extraire le paramètre de redirection s'il existe
+  const queryParams = new URLSearchParams(location.search);
+  const redirectTo = queryParams.get('redirect') || '/dashboard';
+  
+  // Rediriger si déjà connecté
+  useEffect(() => {
+    if (userAuthenticated) {
+      navigate(redirectTo);
+    }
+  }, [userAuthenticated, navigate, redirectTo]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -20,29 +31,24 @@ const Login = () => {
     setError('');
     
     try {
-      // URL corrigée pour l'API DummyJSON
+      // L'URL peut être /auth/login ou /user/login selon la documentation
       const response = await fetch('https://dummyjson.com/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           username,
           password,
-          expiresInMins: 60 // Optionnel, par défaut 60 minutes
+          expiresInMins: 60 // 60 minutes d'expiration
         }),
       });
       
       const data = await response.json();
-      console.log('Réponse API:', data);
       
       if (!response.ok) {
         throw new Error(data.message || 'Erreur de connexion');
       }
       
-      // Store token in localStorage
-      setToken(data.token);
-      
-      // Get user details - nous pouvons utiliser directement les données de l'API
-      // puisqu'elles contiennent déjà les informations de l'utilisateur
+      // Extraire les données utilisateur de la réponse
       const userData = {
         id: data.id,
         username: data.username,
@@ -55,13 +61,19 @@ const Login = () => {
         address: data.address
       };
       
-      // Update context
+      // Stockage du token dans le localStorage
+      setToken(data.token);
+      
+      // Stockage des données utilisateur pour un chargement plus rapide
+      setUserData(userData);
+      
+      // Mise à jour du contexte
       setUserAuthenticated({ token: data.token, ...userData });
       
-      console.log('Connexion réussie:', userData);
+      console.log('Connexion réussie, redirection vers:', redirectTo);
       
-      // Redirect to dashboard
-      navigate('/dashboard');
+      // Redirection
+      navigate(redirectTo);
     } catch (err) {
       console.error('Erreur de connexion:', err);
       setError(err.message || 'Erreur de connexion. Veuillez réessayer.');
@@ -112,8 +124,8 @@ const Login = () => {
           <div className="login-help">
             <p>Pour les tests, utilisez les identifiants:</p>
             <ul>
-              <li>Username: emilys</li>
-              <li>Password: emilyspass</li>
+              <li>Username: kminchelle</li>
+              <li>Password: 0lelplR</li>
             </ul>
           </div>
         </form>
@@ -122,4 +134,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Login;   

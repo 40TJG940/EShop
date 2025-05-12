@@ -1,11 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Ratings from './Ratings';
+import { CartContext } from '../context/CartContext';
 import '../components.css';
 
 const Product = ({ product }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const [addingToCart, setAddingToCart] = useState(false);
+  const [showAddedMessage, setShowAddedMessage] = useState(false);
+  
+  const { addToCart } = useContext(CartContext);
   
   const { 
+    id,
     title, 
     category, 
     brand, 
@@ -14,8 +20,7 @@ const Product = ({ product }) => {
     description, 
     price, 
     discountPercentage,
-    stock,
-    reviews
+    stock
   } = product;
 
   // Calculate discounted price
@@ -38,6 +43,27 @@ const Product = ({ product }) => {
     color: stock > 10 ? '#10b981' : stock > 0 ? '#f59e0b' : '#ef4444',
     fontWeight: stock <= 10 ? 'bold' : 'normal',
     animation: stock <= 10 && stock > 0 ? 'pulse 2s infinite' : 'none'
+  };
+
+  // Fonction pour gérer l'ajout au panier
+  const handleAddToCart = () => {
+    if (stock <= 0) return; // Ne pas ajouter si rupture de stock
+    
+    setAddingToCart(true);
+    
+    // Simuler un délai pour montrer l'animation
+    setTimeout(() => {
+      addToCart(product, 1);
+      setAddingToCart(false);
+      
+      // Afficher le message "Ajouté au panier"
+      setShowAddedMessage(true);
+      
+      // Cacher le message après 2 secondes
+      setTimeout(() => {
+        setShowAddedMessage(false);
+      }, 2000);
+    }, 300);
   };
 
   return (
@@ -77,8 +103,18 @@ const Product = ({ product }) => {
         </div>
         
         <div className="product-footer">
-          <button className="buy-button">
-            Acheter
+          <button 
+            className={`buy-button ${addingToCart ? 'adding' : ''} ${showAddedMessage ? 'added' : ''} ${stock <= 0 ? 'disabled' : ''}`}
+            onClick={handleAddToCart}
+            disabled={stock <= 0 || addingToCart}
+          >
+            {showAddedMessage 
+              ? '✓ Ajouté' 
+              : addingToCart 
+                ? 'Ajout...' 
+                : stock <= 0 
+                  ? 'Indisponible' 
+                  : 'Ajouter au panier'}
           </button>
           <span className="availability" style={availabilityStyle}>
             {availabilityStatus}
