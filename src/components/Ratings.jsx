@@ -19,10 +19,22 @@ const Ratings = ({ rating }) => {
     }
   }
 
+  // Create styles for delayed animation
+  const getStarStyle = (index) => ({
+    animation: 'scaleIn 0.3s forwards',
+    animationDelay: `${index * 0.05}s`,
+    opacity: 0,
+    transform: 'translateY(5px)'
+  });
+
   return (
     <div className="ratings-container">
       {starsArray.map((type, index) => (
-        <span key={index} className={`star ${type}`}>
+        <span 
+          key={index} 
+          className={`star ${type}`}
+          style={getStarStyle(index)}
+        >
           {type === 'full' && '★'}
           {type === 'half' && '★'}
           {type === 'empty' && '☆'}
