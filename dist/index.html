@@ -1,15 +1,37 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="icon" type="image/svg+xml" href="./favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My Eshop App</title>
+    <meta name="description" content="Eshop - Votre boutique en ligne de vêtements et accessoires" />
+    <title>Eshop - Boutique en ligne</title>
+    
+    <!-- Polices Google et CSS externes -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
-    <script type="module" crossorigin src="/assets/index-a-5QZnUj.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-BfLgi6ql.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
+    <script type="module" crossorigin src="./assets/main-HOjxzLqe.js"></script>
+    <link rel="modulepreload" crossorigin href="./assets/vendor-react-BtP0CW_r.js">
+    <link rel="modulepreload" crossorigin href="./assets/vendor-router-DX9q2sAQ.js">
+    <link rel="stylesheet" crossorigin href="./assets/main-BfLgi6ql.css">
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root"></div>
+    
+    <!-- Script pour gérer la redirection avec GitHub Pages -->
+    <script type="text/javascript">
+      // Redirection script for GitHub Pages
+      (function(l) {
+        if (l.search[1] === '/' ) {
+          var decoded = l.search.slice(1).split('&').map(function(s) { 
+            return s.replace(/~and~/g, '&')
+          }).join('?');
+          window.history.replaceState(null, null,
+              l.pathname.slice(0, -1) + decoded + l.hash
+          );
+        }
+      }(window.location))
+    </script>
+    
   </body>
 </html>

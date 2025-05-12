@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { HashRouter, Routes, Route, Navigate } from "react-router-dom";
 import HeaderWithCart from "./components/HeaderWithCart";
 import Footer from "./components/Footer";
 import HomePage from "./components/HomePage";
@@ -16,7 +16,7 @@ function AppWithCart() {
   return (
     <AuthProvider>
       <CartProvider>
-        <BrowserRouter>
+        <HashRouter>
           <div className="app-wrapper">
             <HeaderWithCart />
             
@@ -38,7 +38,7 @@ function AppWithCart() {
             
             <Footer />
           </div>
-        </BrowserRouter>
+        </HashRouter>
       </CartProvider>
     </AuthProvider>
   );
